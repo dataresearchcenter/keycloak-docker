@@ -1,5 +1,5 @@
 # https://www.keycloak.org/server/containers
-FROM quay.io/keycloak/keycloak:latest AS builder
+FROM quay.io/keycloak/keycloak:26.7.4  AS builder
 
 ENV KC_METRICS_ENABLED=true
 ENV KC_HEALTH_ENABLED=true
