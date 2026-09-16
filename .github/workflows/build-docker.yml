@@ -18,7 +18,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/investigativedata/keycloak
+          images: ghcr.io/dataresearchcenter/keycloak
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
