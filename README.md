@@ -8,7 +8,7 @@ First, update `Dockerfile` to get the latest from https://quay.io/repository/key
 
 ```bash
 git tag <version>
-git push origin <version>
+git push --atomic origin main $(git describe --tags --abbrev=0)
 ```
 
 This will trigger the github CI and push a container at `ghcr.io/dataresearchcenter/keycloak:<version>`
