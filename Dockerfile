@@ -14,12 +14,10 @@ FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
 COPY --from=builder /opt/keycloak/lib/quarkus/ /opt/keycloak/lib/quarkus/
 WORKDIR /opt/keycloak
 
-ENV KEYCLOAK_ADMIN=admin
 ENV KC_DB=postgres
 ENV KC_DB_USERNAME=keycloak
-ENV KC_PROXY=edge
 ENV KC_HOSTNAME_STRICT=true
-ENV KC_HOSTNAME_STRICT_BACKCHANNEL=true
 ENV KC_HTTP_ENABLED=true
+ENV KC_PROXY_HEADERS=xforwarded
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
