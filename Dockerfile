@@ -1,5 +1,5 @@
 # https://www.keycloak.org/server/containers
-ARG KEYCLOAK_VERSION=26.7.4
+ARG KEYCLOAK_VERSION=26.8.0
 
 FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION} AS builder
 
