@@ -30,6 +30,7 @@ jobs:
           images: ghcr.io/dataresearchcenter/keycloak
           tags: |
             type=raw,value=${{ steps.keycloak_version.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=sha
