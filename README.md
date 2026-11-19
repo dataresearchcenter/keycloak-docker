@@ -1,14 +1,14 @@
 # keycloak-docker
 
-Keycloak custom build
+Keycloak custom build, published as `ghcr.io/dataresearchcenter/keycloak:<keycloak version>`.
 
-Bump version:
+## Bump version
 
-First, update `Dockerfile` to get the latest from https://quay.io/repository/keycloak/keycloak?tab=tags
+The upstream version lives in the `Dockerfile`'s two `FROM` tags. Dependabot
+watches them and opens a PR for every upstream release; **merging that PR is
+the release** — the push to `main` builds the image and pushes it as
+`ghcr.io/dataresearchcenter/keycloak:<keycloak version>`.
 
-```bash
-git tag <version>
-git push --atomic origin main $(git describe --tags --abbrev=0)
-```
-
-This will trigger the github CI and push a container at `ghcr.io/dataresearchcenter/keycloak:<version>`
+To bump by hand, change both `FROM` tags to the same version and push to
+`main`. The build fails if the two disagree. Pushing a semver git tag also
+still produces an image with that tag, if you want a release marker.

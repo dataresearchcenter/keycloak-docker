@@ -12,6 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Determine Keycloak version
+        id: keycloak_version
+        run: |
+          mapfile -t tags < <(sed -n 's|^FROM quay.io/keycloak/keycloak:\([^ @]*\).*|\1|p' Dockerfile)
+          if [ "${#tags[@]}" -ne 2 ] || [ "${tags[0]}" != "${tags[1]}" ]; then
+            echo "::error::the Dockerfile's FROM tags disagree: ${tags[*]}"
+            exit 1
+          fi
+          echo "version=${tags[0]}" >> "$GITHUB_OUTPUT"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Docker meta
@@ -20,17 +29,10 @@ jobs:
         with:
           images: ghcr.io/dataresearchcenter/keycloak
           tags: |
+            type=raw,value=${{ steps.keycloak_version.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=sha
-      - name: Determine Keycloak version
-        id: keycloak_version
-        run: |
-          if [ "${{ github.ref_type }}" = "tag" ]; then
-            echo "version=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "version=" >> "$GITHUB_OUTPUT"
-          fi
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
         with:
@@ -49,7 +51,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            ${{ steps.keycloak_version.outputs.version != '' && format('KEYCLOAK_VERSION={0}', steps.keycloak_version.outputs.version) || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
