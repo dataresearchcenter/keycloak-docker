@@ -1,5 +1,5 @@
 # https://www.keycloak.org/server/containers
-FROM quay.io/keycloak/keycloak:26.8.2-2 AS builder
+FROM quay.io/keycloak/keycloak:26.8.2-3 AS builder
 
 ENV KC_DB=postgres
 ENV KC_FEATURES=token-exchange
@@ -9,7 +9,7 @@ ENV KC_METRICS_ENABLED=true
 COPY themes/*.jar /opt/keycloak/providers/
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:26.8.2-2
+FROM quay.io/keycloak/keycloak:26.8.2-3
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 WORKDIR /opt/keycloak
 
